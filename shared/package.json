@@ -1,0 +1,16 @@
+{
+  "name": "@night-market/shared",
+  "version": "0.0.0",
+  "description": "The API contract: types shared by the server and the client.",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "typecheck": "tsc -p ."
+  },
+  "devDependencies": {
+    "typescript": "^7.0.2"
+  }
+}

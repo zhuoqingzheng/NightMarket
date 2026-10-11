@@ -1,0 +1,104 @@
+@import 'tailwindcss';
+@import '@fontsource-variable/inter';
+@import '@fontsource/instrument-serif/400.css';
+@import '@fontsource/instrument-serif/400-italic.css';
+
+@theme {
+  --font-sans: 'Inter Variable', ui-sans-serif, system-ui, sans-serif;
+  --font-display: 'Instrument Serif', ui-serif, Georgia, serif;
+
+  --color-paper: oklch(0.985 0.004 85);
+
+  --color-lantern-50: oklch(0.975 0.018 45);
+  --color-lantern-100: oklch(0.945 0.04 45);
+  --color-lantern-200: oklch(0.89 0.08 43);
+  --color-lantern-300: oklch(0.82 0.125 41);
+  --color-lantern-400: oklch(0.74 0.165 39);
+  --color-lantern-500: oklch(0.665 0.19 37);
+  --color-lantern-600: oklch(0.59 0.19 35);
+  --color-lantern-700: oklch(0.5 0.165 33);
+  --color-lantern-800: oklch(0.42 0.135 32);
+  --color-lantern-900: oklch(0.35 0.105 31);
+
+  --shadow-soft: 0 1px 2px rgb(28 25 23 / 0.04), 0 2px 8px -2px rgb(28 25 23 / 0.06);
+  --shadow-lift: 0 1px 2px rgb(28 25 23 / 0.04), 0 18px 36px -14px rgb(28 25 23 / 0.2);
+
+  --animate-rise: rise 0.45s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+  --animate-taken: taken 1.6s ease-out;
+  --animate-dialog: dialog-in 0.18s cubic-bezier(0.2, 0.8, 0.2, 1);
+
+  @keyframes rise {
+    from {
+      opacity: 0;
+      transform: translateY(6px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  @keyframes taken {
+    0% {
+      transform: scale(1);
+      box-shadow: 0 0 0 0 rgb(244 63 94 / 0.55);
+    }
+    20% {
+      transform: scale(1.18);
+    }
+    100% {
+      transform: scale(1);
+      box-shadow: 0 0 0 14px rgb(244 63 94 / 0);
+    }
+  }
+
+  @keyframes dialog-in {
+    from {
+      opacity: 0;
+      transform: translateY(8px) scale(0.98);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+}
+
+/* Hatched fill for stalls that are already taken. */
+@utility stripes {
+  background-image: repeating-linear-gradient(-45deg, transparent 0 3px, rgb(120 113 108 / 0.14) 3px 4px);
+}
+
+/* Faint dotted "drafting paper" behind the floor plan. */
+@utility dot-grid {
+  background-image: radial-gradient(circle at 1px 1px, rgb(28 25 23 / 0.075) 1px, transparent 0);
+  background-size: 18px 18px;
+}
+
+@layer base {
+  html {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    font-feature-settings: 'cv11';
+  }
+
+  body {
+    @apply bg-paper font-sans text-stone-900;
+  }
+
+  ::selection {
+    background-color: var(--color-lantern-200);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    ::before,
+    ::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
