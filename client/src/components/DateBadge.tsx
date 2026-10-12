@@ -1,5 +1,5 @@
-import { cn } from '../lib/cn';
-import { dateParts } from '../lib/format';
+import { cn } from '../helpers/cn';
+import { dateParts } from '../helpers/format';
 
 interface DateBadgeProps {
   /** ISO 8601 timestamp. */

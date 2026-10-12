@@ -1,9 +1,9 @@
 import type { Booking, EventDetail, Stall } from '@night-market/shared';
 import { ArrowRight, Check, CircleCheck, Moon, Ticket, Zap } from 'lucide-react';
 import type { ReactNode } from 'react';
-import { cn } from '../lib/cn';
-import { formatMoney, formatMoneyDelta, formatShortDate } from '../lib/format';
-import { STALL_INCLUDES, summariseTiers, TIERS } from '../lib/tiers';
+import { cn } from '../helpers/cn';
+import { formatMoney, formatMoneyDelta, formatShortDate } from '../helpers/format';
+import { STALL_INCLUDES, summariseTiers, TIERS } from '../helpers/tiers';
 import { LanternMark } from './Logo';
 import { TierChip } from './TierChip';
 import { Button } from './ui/Button';

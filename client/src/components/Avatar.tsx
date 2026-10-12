@@ -1,4 +1,4 @@
-import { cn } from '../lib/cn';
+import { cn } from '../helpers/cn';
 
 const TONES = [
   'bg-amber-100 text-amber-800',

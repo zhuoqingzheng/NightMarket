@@ -1,7 +1,7 @@
 import type { EventSummary } from '@night-market/shared';
 import { ArrowUpRight, Clock, MapPin } from 'lucide-react';
 import { Link } from 'react-router';
-import { formatMoney, formatTimeRange, relativeDay } from '../lib/format';
+import { formatMoney, formatTimeRange, relativeDay } from '../helpers/format';
 import { DateBadge } from './DateBadge';
 import { AvailabilityMeter, EventStatusPill } from './EventStatus';
 import { NightScene } from './NightScene';

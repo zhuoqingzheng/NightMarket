@@ -1,7 +1,7 @@
 import { Navigate, Outlet, Route, Routes, useLocation, type Location } from 'react-router';
 import { AppShell } from './components/AppShell';
 import { ErrorState, FullPageSpinner } from './components/States';
-import { useMe } from './lib/hooks';
+import { useMe } from './helpers/hooks';
 import { AuthLayout } from './pages/AuthLayout';
 import { BookingsPage } from './pages/BookingsPage';
 import { EventPage } from './pages/EventPage';

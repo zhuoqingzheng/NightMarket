@@ -4,7 +4,7 @@ import { createRoot } from 'react-dom/client';
 import { BrowserRouter } from 'react-router';
 import { Toaster } from 'sonner';
 import { App } from './App';
-import { queryClient } from './lib/queryClient';
+import { queryClient } from './helpers/queryClient';
 import './index.css';
 
 const root = document.getElementById('root');

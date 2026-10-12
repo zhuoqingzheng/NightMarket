@@ -10,10 +10,10 @@ import { EmptyState, ErrorState } from '../components/States';
 import { TierChip } from '../components/TierChip';
 import { Button, buttonStyles } from '../components/ui/Button';
 import { ConfirmDialog } from '../components/ui/ConfirmDialog';
-import { api } from '../lib/api';
-import { applyMyBooking, refreshBookingData } from '../lib/bookingCache';
-import { formatLongDate, formatMoney, formatShortDate, formatTimeRange, relativeDay } from '../lib/format';
-import { useDocumentTitle } from '../lib/hooks';
+import { api } from '../helpers/api';
+import { applyMyBooking, refreshBookingData } from '../helpers/bookingCache';
+import { formatLongDate, formatMoney, formatShortDate, formatTimeRange, relativeDay } from '../helpers/format';
+import { useDocumentTitle } from '../helpers/hooks';
 
 export function BookingsPage() {
   useDocumentTitle('My bookings');

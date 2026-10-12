@@ -7,9 +7,9 @@ import { Avatar } from '../components/Avatar';
 import { Button } from '../components/ui/Button';
 import { FormError, InputField } from '../components/ui/Field';
 import { Spinner } from '../components/ui/Spinner';
-import { api } from '../lib/api';
-import { firstName } from '../lib/format';
-import { useDocumentTitle } from '../lib/hooks';
+import { api } from '../helpers/api';
+import { firstName } from '../helpers/format';
+import { useDocumentTitle } from '../helpers/hooks';
 
 const DEMO_PASSWORD = 'demo1234';
 

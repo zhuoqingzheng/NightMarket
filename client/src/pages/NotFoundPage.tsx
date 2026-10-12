@@ -1,7 +1,7 @@
 import { Link } from 'react-router';
 import { LanternMark } from '../components/Logo';
 import { buttonStyles } from '../components/ui/Button';
-import { useDocumentTitle } from '../lib/hooks';
+import { useDocumentTitle } from '../helpers/hooks';
 
 export function NotFoundPage() {
   useDocumentTitle('Page not found');

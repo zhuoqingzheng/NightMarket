@@ -12,12 +12,12 @@ import { StallLegend, StallMap } from '../components/StallMap';
 import { EmptyState, ErrorState } from '../components/States';
 import { Button, buttonStyles } from '../components/ui/Button';
 import { ConfirmDialog } from '../components/ui/ConfirmDialog';
-import { api, ApiError } from '../lib/api';
-import { applyMyBooking, refreshBookingData } from '../lib/bookingCache';
-import { formatLongDate, formatMoney, formatTimeRange } from '../lib/format';
-import { useDocumentTitle } from '../lib/hooks';
-import { TIERS } from '../lib/tiers';
-import { useEventLive } from '../lib/useEventLive';
+import { api, ApiError } from '../helpers/api';
+import { applyMyBooking, refreshBookingData } from '../helpers/bookingCache';
+import { formatLongDate, formatMoney, formatTimeRange } from '../helpers/format';
+import { useDocumentTitle } from '../helpers/hooks';
+import { TIERS } from '../helpers/tiers';
+import { useEventLive } from '../helpers/useEventLive';
 
 export function EventPage() {
   const { slug = '' } = useParams();

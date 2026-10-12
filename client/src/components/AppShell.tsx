@@ -1,8 +1,8 @@
 import { LogOut } from 'lucide-react';
 import { useEffect } from 'react';
 import { Link, NavLink, Outlet, useLocation } from 'react-router';
-import { cn } from '../lib/cn';
-import { useMerchant, useSignOut } from '../lib/hooks';
+import { cn } from '../helpers/cn';
+import { useMerchant, useSignOut } from '../helpers/hooks';
 import { Avatar } from './Avatar';
 import { Logo } from './Logo';
 

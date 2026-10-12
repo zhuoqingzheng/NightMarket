@@ -1,6 +1,6 @@
 import type { Tier } from '@night-market/shared';
-import { cn } from '../lib/cn';
-import { TIERS } from '../lib/tiers';
+import { cn } from '../helpers/cn';
+import { TIERS } from '../helpers/tiers';
 
 interface TierChipProps {
   tier: Tier;

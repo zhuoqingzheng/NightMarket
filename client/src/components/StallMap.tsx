@@ -1,9 +1,9 @@
 import type { EventDetail, Stall, StallStatus, Tier } from '@night-market/shared';
 import { DoorOpen } from 'lucide-react';
 import { Fragment, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
-import { cn } from '../lib/cn';
-import { formatMoney } from '../lib/format';
-import { summariseTiers, TIERS } from '../lib/tiers';
+import { cn } from '../helpers/cn';
+import { formatMoney } from '../helpers/format';
+import { summariseTiers, TIERS } from '../helpers/tiers';
 
 const AVAILABLE_TILE: Record<Tier, string> = {
   prime: 'bg-amber-100 text-amber-900/50 ring-amber-300/90 hover:bg-amber-200/70 hover:text-amber-950 hover:ring-amber-400',

@@ -3,9 +3,9 @@ import { ArrowRight, CalendarX } from 'lucide-react';
 import { Link } from 'react-router';
 import { EventCard, EventCardSkeleton } from '../components/EventCard';
 import { EmptyState, ErrorState } from '../components/States';
-import { api } from '../lib/api';
-import { firstName, greeting } from '../lib/format';
-import { useDocumentTitle, useMerchant } from '../lib/hooks';
+import { api } from '../helpers/api';
+import { firstName, greeting } from '../helpers/format';
+import { useDocumentTitle, useMerchant } from '../helpers/hooks';
 
 export function EventsPage() {
   useDocumentTitle('Upcoming markets');

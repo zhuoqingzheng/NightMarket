@@ -1,5 +1,5 @@
 import type { EventStatus } from '@night-market/shared';
-import { cn } from '../lib/cn';
+import { cn } from '../helpers/cn';
 
 interface StatusStyle {
   label: string;

@@ -5,9 +5,9 @@ import { Link, useLocation } from 'react-router';
 import { toast } from 'sonner';
 import { Button } from '../components/ui/Button';
 import { FormError, InputField } from '../components/ui/Field';
-import { api } from '../lib/api';
-import { firstName } from '../lib/format';
-import { useDocumentTitle } from '../lib/hooks';
+import { api } from '../helpers/api';
+import { firstName } from '../helpers/format';
+import { useDocumentTitle } from '../helpers/hooks';
 
 const EMPTY: RegisterRequest = { contactName: '', businessName: '', cuisine: '', email: '', password: '' };
 

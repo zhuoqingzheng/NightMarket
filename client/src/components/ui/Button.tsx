@@ -1,5 +1,5 @@
 import type { ButtonHTMLAttributes } from 'react';
-import { cn } from '../../lib/cn';
+import { cn } from '../../helpers/cn';
 import { Spinner } from './Spinner';
 
 type Variant = 'primary' | 'secondary' | 'ghost' | 'danger' | 'danger-solid';
