@@ -1,6 +1,6 @@
 import type { EventTheme, Tier } from '@night-market/shared';
 import { hashPassword } from './auth.ts';
-import { db, one, run, transaction } from './db.ts';
+import { db, queryOne, execute, transaction } from './db.ts';
 
 /**
  * Floor plans are drawn as text, one character per grid cell:
@@ -268,7 +268,7 @@ function parseLayout(layout: string[]) {
 }
 
 export function seedIfEmpty(): boolean {
-  const events = one<{ count: number }>('SELECT COUNT(*) AS count FROM events');
+  const events = queryOne<{ count: number }>('SELECT COUNT(*) AS count FROM events');
   if (events && events.count > 0) return false;
   seedDemoData();
   return true;
@@ -287,7 +287,7 @@ function seedDemoData(): void {
 
   const insertMerchant = (email: string, contactName: string, businessName: string, cuisine: string) =>
     Number(
-      run(
+      execute(
         `INSERT INTO merchants (email, password_hash, contact_name, business_name, cuisine)
          VALUES (?, ?, ?, ?, ?)`,
         email,
@@ -299,7 +299,7 @@ function seedDemoData(): void {
     );
 
   const insertBooking = (eventId: number, stall: { id: number; priceCents: number }, merchantId: number) =>
-    run(
+    execute(
       `INSERT INTO bookings (reference, event_id, stall_id, merchant_id, price_cents)
        VALUES (?, ?, ?, ?, ?)`,
       reference(),
@@ -320,7 +320,7 @@ function seedDemoData(): void {
     for (const spec of EVENTS) {
       const plan = parseLayout(spec.layout);
       const eventId = Number(
-        run(
+        execute(
           `INSERT INTO events (slug, title, tagline, description, venue, address, starts_at, ends_at,
                                theme, map_top, map_bottom, centerpiece, grid_rows, grid_cols)
            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
@@ -344,7 +344,7 @@ function seedDemoData(): void {
       const stalls = plan.stalls.map((stall) => {
         const priceCents = spec.prices[stall.tier] * 100;
         const id = Number(
-          run(
+          execute(
             `INSERT INTO stalls (event_id, label, grid_row, grid_col, tier, price_cents)
              VALUES (?, ?, ?, ?, ?, ?)`,
             eventId,

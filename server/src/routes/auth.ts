@@ -1,7 +1,7 @@
 import type { LoginRequest, MeResponse, MerchantResponse, RegisterRequest } from '@night-market/shared';
 import { type Request, type Response, Router } from 'express';
 import { endSession, hashPassword, loadMerchant, startSession, verifyPassword } from '../auth.ts';
-import { one, run, uniqueViolation } from '../db.ts';
+import { queryOne, execute, uniqueViolation } from '../db.ts';
 import { bodyOf, HttpError, readString } from '../http.ts';
 
 export const authRouter = Router();
@@ -40,7 +40,7 @@ authRouter.post('/register', (req, res: Response<MerchantResponse>) => {
 
   let merchantId: number;
   try {
-    const result = run(
+    const result = execute(
       `INSERT INTO merchants (email, password_hash, contact_name, business_name, cuisine)
        VALUES (?, ?, ?, ?, ?)`,
       email,
@@ -64,7 +64,7 @@ authRouter.post('/register', (req, res: Response<MerchantResponse>) => {
 authRouter.post('/login', (req, res: Response<MerchantResponse>) => {
   const { email, password } = readCredentials(req);
 
-  const account = one<{ id: number; passwordHash: string }>(
+  const account = queryOne<{ id: number; passwordHash: string }>(
     'SELECT id, password_hash AS passwordHash FROM merchants WHERE email = ?',
     email,
   );

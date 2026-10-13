@@ -1,5 +1,5 @@
 import type { Booking, EventStatus, EventTheme, Tier } from '@night-market/shared';
-import { all, one } from './db.ts';
+import { queryAll, queryOne } from './db.ts';
 import { HttpError } from './http.ts';
 
 export function eventStatus(endsAt: string, availableStalls: number, totalStalls: number): EventStatus {
@@ -34,7 +34,7 @@ export interface EventRow {
 }
 
 export function findEventBySlug(slug: string): EventRow {
-  const event = one<EventRow>(
+  const event = queryOne<EventRow>(
     `SELECT id, slug, title, tagline, description, venue, address,
             starts_at AS startsAt, ends_at AS endsAt, theme,
             map_top AS mapTop, map_bottom AS mapBottom, centerpiece,
@@ -94,15 +94,15 @@ function toBooking(row: BookingRow): Booking {
 }
 
 export function bookingsForMerchant(merchantId: number): Booking[] {
-  return all<BookingRow>(`${BOOKING_SELECT} AND b.merchant_id = ? ORDER BY e.starts_at`, merchantId).map(toBooking);
+  return queryAll<BookingRow>(`${BOOKING_SELECT} AND b.merchant_id = ? ORDER BY e.starts_at`, merchantId).map(toBooking);
 }
 
 export function bookingById(bookingId: number): Booking | undefined {
-  const row = one<BookingRow>(`${BOOKING_SELECT} AND b.id = ?`, bookingId);
+  const row = queryOne<BookingRow>(`${BOOKING_SELECT} AND b.id = ?`, bookingId);
   return row && toBooking(row);
 }
 
 export function bookingForEvent(eventId: number, merchantId: number): Booking | undefined {
-  const row = one<BookingRow>(`${BOOKING_SELECT} AND b.event_id = ? AND b.merchant_id = ?`, eventId, merchantId);
+  const row = queryOne<BookingRow>(`${BOOKING_SELECT} AND b.event_id = ? AND b.merchant_id = ?`, eventId, merchantId);
   return row && toBooking(row);
 }

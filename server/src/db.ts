@@ -92,15 +92,15 @@ function prepare(sql: string): StatementSync {
   return statement;
 }
 
-export function one<T>(sql: string, ...params: SQLInputValue[]): T | undefined {
+export function queryOne<T>(sql: string, ...params: SQLInputValue[]): T | undefined {
   return prepare(sql).get(...params) as unknown as T | undefined;
 }
 
-export function all<T>(sql: string, ...params: SQLInputValue[]): T[] {
+export function queryAll<T>(sql: string, ...params: SQLInputValue[]): T[] {
   return prepare(sql).all(...params) as unknown as T[];
 }
 
-export function run(sql: string, ...params: SQLInputValue[]) {
+export function execute(sql: string, ...params: SQLInputValue[]) {
   return prepare(sql).run(...params);
 }
 

@@ -8,7 +8,7 @@ import type {
 } from '@night-market/shared';
 import { type Response, Router } from 'express';
 import { currentMerchant } from '../auth.ts';
-import { nowIso, one, run, transaction, uniqueViolation } from '../db.ts';
+import { nowIso, queryOne, execute, transaction, uniqueViolation } from '../db.ts';
 import { bodyOf, HttpError, readId } from '../http.ts';
 import { broadcastStallChange } from '../live.ts';
 import { bookingById, bookingsForMerchant } from '../queries.ts';
@@ -46,7 +46,7 @@ function ensureNotEnded(endsAt: string): void {
 }
 
 function findBookableStall(stallId: number): BookableStall {
-  const stall = one<BookableStall>(
+  const stall = queryOne<BookableStall>(
     `SELECT s.id, s.label, s.price_cents AS priceCents, s.event_id AS eventId, e.ends_at AS endsAt
        FROM stalls s
        JOIN events e ON e.id = s.event_id
@@ -63,12 +63,12 @@ function stallTakenError(label: string): HttpError {
 }
 
 function ensureStallFree(stall: BookableStall): void {
-  const taken = one("SELECT 1 FROM bookings WHERE stall_id = ? AND status = 'confirmed'", stall.id);
+  const taken = queryOne("SELECT 1 FROM bookings WHERE stall_id = ? AND status = 'confirmed'", stall.id);
   if (taken) throw stallTakenError(stall.label);
 }
 
 function findOwnBooking(bookingId: number, merchantId: number): OwnBooking {
-  const booking = one<OwnBooking>(
+  const booking = queryOne<OwnBooking>(
     `SELECT b.id, b.event_id AS eventId, b.stall_id AS stallId, s.label AS stallLabel, e.ends_at AS endsAt
        FROM bookings b
        JOIN stalls s ON s.id = b.stall_id
@@ -84,7 +84,7 @@ function findOwnBooking(bookingId: number, merchantId: number): OwnBooking {
 function insertBooking(stall: BookableStall, merchantId: number): number {
   for (let attempt = 0; attempt < 5; attempt++) {
     try {
-      const result = run(
+      const result = execute(
         `INSERT INTO bookings (reference, event_id, stall_id, merchant_id, price_cents)
          VALUES (?, ?, ?, ?, ?)`,
         newReference(),
@@ -122,7 +122,7 @@ bookingsRouter.post('/', (req, res: Response<BookingResponse>) => {
 
   const booking = transaction(() => {
     const stall = findBookableStall(stallId);
-    const existing = one<{ label: string }>(
+    const existing = queryOne<{ label: string }>(
       `SELECT s.label
          FROM bookings b
          JOIN stalls s ON s.id = b.stall_id
@@ -161,7 +161,7 @@ bookingsRouter.post('/:id/move', (req, res: Response<BookingResponse>) => {
     }
     ensureStallFree(stall);
     try {
-      run('UPDATE bookings SET stall_id = ?, price_cents = ? WHERE id = ?', stall.id, stall.priceCents, current.id);
+      execute('UPDATE bookings SET stall_id = ?, price_cents = ? WHERE id = ?', stall.id, stall.priceCents, current.id);
     } catch (error) {
       if (uniqueViolation(error)?.includes('stall_id')) throw stallTakenError(stall.label);
       throw error;
@@ -180,7 +180,7 @@ bookingsRouter.delete('/:id', (req, res) => {
 
   const booking = findOwnBooking(bookingId, merchant.id);
   ensureNotEnded(booking.endsAt);
-  run("UPDATE bookings SET status = 'cancelled', cancelled_at = ? WHERE id = ?", nowIso(), booking.id);
+  execute("UPDATE bookings SET status = 'cancelled', cancelled_at = ? WHERE id = ?", nowIso(), booking.id);
 
   broadcastStallChange(booking.eventId, { stallId: booking.stallId, status: 'available' });
   res.status(204).end();

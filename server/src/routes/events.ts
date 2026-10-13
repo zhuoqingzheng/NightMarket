@@ -1,7 +1,7 @@
 import type { Centerpiece, EventResponse, EventsResponse, EventTheme, StallStatus, Tier } from '@night-market/shared';
 import { type Response, Router } from 'express';
 import { currentMerchant } from '../auth.ts';
-import { all } from '../db.ts';
+import { queryAll } from '../db.ts';
 import { openStream } from '../live.ts';
 import { bookingForEvent, eventStatus, findEventBySlug } from '../queries.ts';
 
@@ -35,7 +35,7 @@ interface StallRow {
 
 eventsRouter.get('/', (req, res: Response<EventsResponse>) => {
   const merchant = currentMerchant(req);
-  const rows = all<EventSummaryRow>(
+  const rows = queryAll<EventSummaryRow>(
     `SELECT e.id, e.slug, e.title, e.tagline, e.venue,
             e.starts_at AS startsAt, e.ends_at AS endsAt, e.theme,
             COUNT(s.id) AS totalStalls,
@@ -63,7 +63,7 @@ eventsRouter.get('/:slug', (req, res: Response<EventResponse>) => {
   const merchant = currentMerchant(req);
   const { centerpiece, ...event } = findEventBySlug(req.params.slug);
 
-  const stalls = all<StallRow>(
+  const stalls = queryAll<StallRow>(
     `SELECT s.id, s.label, s.grid_row AS row, s.grid_col AS col, s.tier, s.price_cents AS priceCents,
             CASE
               WHEN b.id IS NULL THEN 'available'

@@ -1,7 +1,7 @@
 import { createHash, randomBytes, scryptSync, timingSafeEqual } from 'node:crypto';
 import type { Merchant } from '@night-market/shared';
 import type { NextFunction, Request, Response } from 'express';
-import { nowIso, one, run } from './db.ts';
+import { nowIso, queryOne, execute } from './db.ts';
 import { HttpError } from './http.ts';
 
 declare global {
@@ -49,8 +49,8 @@ export function startSession(req: Request, res: Response, merchantId: number): v
   const token = randomBytes(32).toString('base64url');
   const expiresAt = new Date(Date.now() + SESSION_TTL_MS);
 
-  run('DELETE FROM sessions WHERE expires_at <= ?', nowIso());
-  run(
+  execute('DELETE FROM sessions WHERE expires_at <= ?', nowIso());
+  execute(
     'INSERT INTO sessions (token_hash, merchant_id, expires_at) VALUES (?, ?, ?)',
     sha256(token),
     merchantId,
@@ -67,13 +67,13 @@ export function startSession(req: Request, res: Response, merchantId: number): v
 
 export function endSession(req: Request, res: Response): void {
   const token = readSessionCookie(req);
-  if (token) run('DELETE FROM sessions WHERE token_hash = ?', sha256(token));
+  if (token) execute('DELETE FROM sessions WHERE token_hash = ?', sha256(token));
   res.clearCookie(COOKIE_NAME, { path: '/' });
 }
 
 /** Loads a merchant who must exist, such as one who has just registered or signed in. */
 export function loadMerchant(id: number): Merchant {
-  const merchant = one<Merchant>(`SELECT ${MERCHANT_COLUMNS} FROM merchants m WHERE m.id = ?`, id);
+  const merchant = queryOne<Merchant>(`SELECT ${MERCHANT_COLUMNS} FROM merchants m WHERE m.id = ?`, id);
   if (!merchant) throw new Error(`Merchant ${id} vanished mid-request.`);
   return merchant;
 }
@@ -82,7 +82,7 @@ export function loadMerchant(id: number): Merchant {
 export function loadSession(req: Request, _res: Response, next: NextFunction): void {
   const token = readSessionCookie(req);
   if (token) {
-    req.merchant = one<Merchant>(
+    req.merchant = queryOne<Merchant>(
       `SELECT ${MERCHANT_COLUMNS}
          FROM sessions s
          JOIN merchants m ON m.id = s.merchant_id
