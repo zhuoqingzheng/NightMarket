@@ -2,6 +2,7 @@
 
 Stall bookings for night-market food vendors. Vendors sign in, browse upcoming markets and pick their exact pitch on a cinema-style floor plan. Stalls are first come, first served, and the map updates live as other vendors book.
 <img width="1834" height="1289" alt="image" src="https://github.com/user-attachments/assets/df60bb29-e3f6-4de3-a5bd-81ad64b86585" />
+It is used as a template that will be moved into production in the future. 
 
 
 ## Quick start
